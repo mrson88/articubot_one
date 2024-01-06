@@ -119,6 +119,19 @@ def generate_launch_description():
         )
     )
 
+
+    joint_gripper_spawner = Node(
+        package="controller_manager",
+        executable="spawner.py",
+        arguments=["gripper_controller"],
+    )
+
+    delayed_gripper_spawner = RegisterEventHandler(
+        event_handler=OnProcessStart(
+            target_action=controller_manager,
+            on_start=[joint_gripper_spawner],
+        )
+    )
     # Code for delaying a node (I haven't tested how effective it is)
     # 
     # First add the below lines to imports
@@ -135,10 +148,10 @@ def generate_launch_description():
     #
     # Replace the diff_drive_spawner in the final return with delayed_diff_drive_spawner
 
-    # joint_state_publisher_gui_node = Node(
-    #     package="joint_state_publisher_gui",
-    #     executable="joint_state_publisher_gui"
-    # )
+    joint_state_publisher_gui_node = Node(
+        package="joint_state_publisher_gui",
+        executable="joint_state_publisher_gui"
+    )
 
     # Launch them all!
     return LaunchDescription([
@@ -146,10 +159,11 @@ def generate_launch_description():
         # joint_state_publisher_gui_node,
         joystick,
         # ldlidar_node,
-        camera_node,
+        # camera_node,
         twist_mux,
         delayed_controller_manager,
         delayed_diff_drive_spawner,
         delayed_joint_broad_spawner,
-        delayed_arm_spawner
+        delayed_arm_spawner,
+        delayed_gripper_spawner
     ])
