@@ -77,6 +77,13 @@ def generate_launch_description():
                 'camera_frame_id': 'camera_link_optical'
                 }]
     )
+    moveit=IncludeLaunchDescription(os.path.join(
+        get_package_share_directory("articubot_moveit"),
+        "launch",
+        "moveit.launch.py"
+    ))
+
+
 
     diff_drive_spawner = Node(
         package="controller_manager",
@@ -132,34 +139,42 @@ def generate_launch_description():
             on_start=[joint_gripper_spawner],
         )
     )
+
+    rviz_config = os.path.join(
+        get_package_share_directory("articubot_one"),
+            "config",
+            "main.rviz",
+    )
+    rviz = Node(
+        name='rviz',
+        package='rviz2',
+        executable='rviz2',
+        output='screen',
+        arguments=["-d", rviz_config],
+    )
     # Code for delaying a node (I haven't tested how effective it is)
     # 
-    # First add the below lines to imports
-    # from launch.actions import RegisterEventHandler
-    # from launch.event_handlers import OnProcessExit
-    #
-    # Then add the following below the current diff_drive_spawner
-    # delayed_diff_drive_spawner = RegisterEventHandler(
-    #     event_handler=OnProcessExit(
-    #         target_action=spawn_entity,
-    #         on_exit=[diff_drive_spawner],
-    #     )
+
+    # joint_state_publisher_gui_node = Node(
+    #     package="joint_state_publisher_gui",
+    #     executable="joint_state_publisher_gui"
     # )
-    #
-    # Replace the diff_drive_spawner in the final return with delayed_diff_drive_spawner
-
     joint_state_publisher_gui_node = Node(
-        package="joint_state_publisher_gui",
-        executable="joint_state_publisher_gui"
+        package='joint_state_publisher_gui',
+        executable='joint_state_publisher_gui',
+        # remappings=[
+        #     ('/joint_states', '/joint_commands'),
+        # ]
     )
-
     # Launch them all!
     return LaunchDescription([
         rsp,
         # joint_state_publisher_gui_node,
-        joystick,
+        # joystick,
+        moveit,
         # ldlidar_node,
         # camera_node,
+        # rviz,
         twist_mux,
         delayed_controller_manager,
         delayed_diff_drive_spawner,
