@@ -191,7 +191,7 @@
     <joint name="forearm_hand_2_joint" type="revolute">
         <parent link="hand_1_link" />
         <child link="hand_2_link" />
-        <origin xyz="0 0 ${hand_length}" rpy="0 0 0" />
+        <origin xyz="0 0 ${hand_length}" rpy="0 0 ${pi}" />
         <axis xyz="0 1 0" />
         <limit lower="${-pi/2}" upper="${pi/2}" effort="100" velocity="100" />
         <dynamics friction="0.05" damping="0.1" />

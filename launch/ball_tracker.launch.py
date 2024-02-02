@@ -25,7 +25,7 @@ def generate_launch_description():
                     launch_arguments={'params_file': params_path,
                                     'image_topic': '/camera/image_raw',
                                     'cmd_vel_topic': '/cmd_vel_tracker',
-                                    'enable_3d_tracker': 'true'}.items())
+                                    'enable_3d_tracker': 'false'}.items())
 
     return LaunchDescription([
         sim_mode_dec,

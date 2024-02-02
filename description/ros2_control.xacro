@@ -58,7 +58,7 @@
             <joint name="forearm_hand_3_joint">
                 <command_interface name="position">
                 <param name="min">-${PI / 2}</param>
-                <param name="max">0.0</param>
+                <param name="max">${PI / 2}</param>
                 </command_interface>
                 <state_interface name="position"/>
             </joint>
@@ -66,7 +66,7 @@
              <joint name="forearm_claw_joint">
                 <command_interface name="position">
                 <param name="min">-${PI / 2}</param>
-                <param name="max">0.0</param>
+                <param name="max">${PI / 2}</param>
                 </command_interface>
                 <state_interface name="position"/>
             </joint>           

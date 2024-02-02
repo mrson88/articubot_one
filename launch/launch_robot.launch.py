@@ -77,12 +77,27 @@ def generate_launch_description():
                 'camera_frame_id': 'camera_link_optical'
                 }]
     )
+    camera_realsense_node=Node(
+            package='realsense2_camera',
+            executable='realsense2_camera_node',
+            output='screen',
+
+    )
     moveit=IncludeLaunchDescription(os.path.join(
         get_package_share_directory("articubot_moveit"),
         "launch",
         "moveit.launch.py"
     ))
-
+    slam_toolbox=IncludeLaunchDescription(os.path.join(
+        get_package_share_directory("articubot_one"),
+        "launch",
+        "online_async_launch.py"
+    ))
+    navigation_robot=IncludeLaunchDescription(os.path.join(
+        get_package_share_directory("articubot_one"),
+        "launch",
+        "navigation_launch.py"
+    ))
 
 
     diff_drive_spawner = Node(
@@ -155,10 +170,10 @@ def generate_launch_description():
     # Code for delaying a node (I haven't tested how effective it is)
     # 
 
-    # joint_state_publisher_gui_node = Node(
-    #     package="joint_state_publisher_gui",
-    #     executable="joint_state_publisher_gui"
-    # )
+    joint_state_publisher_gui_node = Node(
+        package="joint_state_publisher_gui",
+        executable="joint_state_publisher_gui"
+    )
     joint_state_publisher_gui_node = Node(
         package='joint_state_publisher_gui',
         executable='joint_state_publisher_gui',
@@ -170,15 +185,18 @@ def generate_launch_description():
     return LaunchDescription([
         rsp,
         # joint_state_publisher_gui_node,
-        # joystick,
-        moveit,
+        joystick,
+        # moveit,
         # ldlidar_node,
         # camera_node,
-        # rviz,
+        # camera_realsense_node,
+        rviz,
         twist_mux,
         delayed_controller_manager,
         delayed_diff_drive_spawner,
         delayed_joint_broad_spawner,
         delayed_arm_spawner,
-        delayed_gripper_spawner
+        delayed_gripper_spawner,
+        # slam_toolbox,
+        # navigation_robot,
     ])
